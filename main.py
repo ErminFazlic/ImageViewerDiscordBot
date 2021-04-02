@@ -6,7 +6,7 @@ from keep_running import keep_running
 
 client =discord.Client()
 gis= GoogleImagesSearch(os.getenv('api_key'), os.getenv('search_engine'))
-counter=0
+
 
 @client.event
 async def on_ready():
