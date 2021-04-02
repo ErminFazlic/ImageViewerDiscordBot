@@ -1,11 +1,12 @@
 import discord
 import os
 from google_images_search import GoogleImagesSearch
+from keep_running import keep_running
 
 
 client =discord.Client()
 gis= GoogleImagesSearch(os.getenv('api_key'), os.getenv('search_engine'))
-
+counter=0
 
 @client.event
 async def on_ready():
@@ -17,15 +18,20 @@ async def on_message(message):
     return
  
   if message.content.startswith('!img'):
-    string=message.content
-    query=string[4:]
-    filetype='jpg|png'
+    try:
+      
+      string=message.content
+      query=string[4:]
+      filetype='jpg|png'
 
-    gis.search({'q': query, 'filetype':filetype})
+      gis.search({'q': query, 'filetype':filetype})
     
 
-    for image in gis.results():
-      await message.channel.send(image.url)
+      for image in gis.results():
+      
+       await message.channel.send(image.url)
+    except:
+      await message.channel.send('Too many requests today, try again tomorrow.')
  
-
+keep_running()
 client.run(os.getenv('Token'))
